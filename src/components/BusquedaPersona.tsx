@@ -1,26 +1,42 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import accesoService from "../service/accesoService";
 
-interface Persona {
-  id: number;
-  nombre: string;
+interface Acceso {
+  nombre_completo: string;
+  dni_escaneado: string;
+  estado_acceso: string;
+  tipo_persona: string;
+  foto_url: string;
 }
-
-const personas: Persona[] = [
-  { id: 1, nombre: 'Juan Pérez' },
-  { id: 2, nombre: 'Ana Gómez' },
-  { id: 3, nombre: 'Carlos Ruiz' },
-];
 
 const BusquedaPersona = () => {
   const [busqueda, setBusqueda] = useState('');
-  const [resultados, setResultados] = useState<Persona[]>([]);
+  const [accesos, setAccesos] = useState<Acceso[]>([]);
+  const [resultados, setResultados] = useState<Acceso[]>([]);
 
-  const handleBuscar = () => {
-    const filtrados = personas.filter(p =>
-      p.nombre.toLowerCase().includes(busqueda.toLowerCase())
+  useEffect(() => {
+    accesoService
+      .getTodayAccess()
+      .then((data) => setAccesos(data.data))
+      .catch((err) => console.error("Error:", err));
+  }, []);
+
+  useEffect(() => {
+    if (busqueda.trim() === "") {
+      setResultados([]);
+      return;
+    }
+    const filtrados = accesos.filter(a =>
+      a.nombre_completo &&
+      a.nombre_completo.toLowerCase().includes(busqueda.toLowerCase())
     );
-    setResultados(filtrados);
-  };
+    // Eliminar duplicados por dni_escaneado
+    const unicos = filtrados.filter(
+      (item, idx, self) =>
+        self.findIndex(a => a.dni_escaneado === item.dni_escaneado) === idx
+    );
+    setResultados(unicos);
+  }, [busqueda, accesos]);
 
   return (
     <div>
@@ -28,27 +44,27 @@ const BusquedaPersona = () => {
       <div className="flex gap-2 mb-4">
         <input
           type="text"
-          className="border border-gray-300 text-blue-900  rounded px-3 py-2 w-full"
+          className="border border-gray-300 text-blue-900 rounded px-3 py-2 w-full"
           placeholder="Nombre de la persona..."
           value={busqueda}
           onChange={(e) => setBusqueda(e.target.value)}
         />
-        <button
-          onClick={handleBuscar}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Buscar
-        </button>
       </div>
 
       {resultados.length > 0 ? (
         <ul className="list-disc pl-5 text-blue-900">
-          {resultados.map((p) => (
-            <li key={p.id}>{p.nombre}</li>
+          {resultados.map((a, idx) => (
+            <li key={idx}>
+              {a.nombre_completo} - {a.dni_escaneado} - {a.tipo_persona}
+            </li>
           ))}
         </ul>
       ) : (
-        <p className="text-gray-500">No hay resultados</p>
+        busqueda.trim() !== "" ? (
+          <p className="text-gray-500">No hay datos de esa persona hoy</p>
+        ) : (
+          <p className="text-gray-500">Haz una búsqueda</p>
+        )
       )}
     </div>
   );

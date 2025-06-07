@@ -6,6 +6,7 @@ interface Acceso {
   nombre_completo: string;
   dni_escaneado: string;
   estado_acceso: string;
+  foto_url: string;
 }
 
 function ListaAccesoDiaria() {
@@ -41,10 +42,13 @@ function ListaAccesoDiaria() {
     ws.current.onclose = () => {
       console.log("WebSocket cerrado");
       setConnected(false);
+      console.log("Recargando página...");
+      window.location.reload();
     };
   };
 
   useEffect(() => {
+    
     accesoService
       .getTodayAccess()
       .then((data) => setAccesos(data.data))
@@ -56,16 +60,20 @@ function ListaAccesoDiaria() {
       if (ws.current) ws.current.close();
     };
   }, []);
+/*   console.log(accesos); */
 
   const items = accesos.map((a) => ({
     texto: `${a.nombre_completo} - ${a.dni_escaneado} - ${a.estado_acceso}`,
     estado: a.estado_acceso,
+    foto_url: a.foto_url,
   }));
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <h2 className="text-2xl font-bold mb-2 text-blue-900 text-center">Listado Accesos</h2>
-{/*       <p className="mb-4 text-blue-900" >
+      <h2 className="text-2xl font-bold mb-2 text-blue-900 text-center">
+        Listado Accesos
+      </h2>
+      {/*       <p className="mb-4 text-blue-900" >
         Estado WebSocket: {connected ? "✅ Conectado" : "❌ Desconectado"}
       </p>
       <button
@@ -78,13 +86,14 @@ function ListaAccesoDiaria() {
 
       <div className="mt-6">
         {items.length === 0 ? (
-          <p className="text-gray-500 text-center">No hay registros por el momento.</p>
+          <p className="text-gray-500 text-center">
+            No hay registros por el momento.
+          </p>
         ) : (
           <AnimatedList
             items={items}
             onItemSelect={(item, index) => console.log(item, index)}
             showGradients={true}
-            enableArrowNavigation={true}
             displayScrollbar={true}
           />
         )}

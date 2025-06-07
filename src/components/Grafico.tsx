@@ -1,74 +1,86 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
-  BarChart, Bar, PieChart, Pie, Cell,
-  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+  PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
+import accesoService from '../service/accesoService';
 
-const data = [
-  { name: 'Lunes', visitas: 400 },
-  { name: 'Martes', visitas: 300 },
-  { name: 'Miércoles', visitas: 500 },
-  { name: 'Jueves', visitas: 200 },
-  { name: 'Viernes', visitas: 278 },
-  { name: 'Sábado', visitas: 189 },
-  { name: 'Domingo', visitas: 239 },
+const COLORS = [
+  '#8884d8', // Domingo
+  '#82ca9d', // Lunes
+  '#ffb347', // Martes
+  '#36a2eb', // Miércoles
+  '#00C49F', // Jueves
+  '#e74c3c', // Viernes
+  '#f39c12', // Sábado
 ];
+const DIAS = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
-const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#00C49F', '#FFBB28', '#FF8042'];
+interface Acceso {
+  fecha_hora_acceso: string;
+}
+
+interface GraficoData {
+  name: string;
+  visitas: number;
+}
 
 const Grafico = () => {
-  const [tipo, setTipo] = useState('barras'); // barras o pastel
+  const [data, setData] = useState<GraficoData[]>([]);
+
+  useEffect(() => {
+    const getWeekAccess = async () => {
+      try {
+        const response = await accesoService.getWeekAccess();
+        const accesos: Acceso[] = Array.isArray(response) ? response : response.data;
+
+        // Contar accesos por día de la semana
+        const conteo: Record<string, number> = {
+          Domingo: 0, Lunes: 0, Martes: 0, Miércoles: 0, Jueves: 0, Viernes: 0, Sábado: 0
+        };
+
+        accesos.forEach(a => {
+          if (a.fecha_hora_acceso) {
+            const dia = DIAS[new Date(a.fecha_hora_acceso).getDay()];
+            conteo[dia]++;
+          }
+        });
+
+        const datos = DIAS.map(dia => ({
+          name: dia,
+          visitas: conteo[dia]
+        }));
+
+        setData(datos);
+      } catch (err) {
+        console.error("Error al obtener accesos de la semana:", err);
+      }
+    };
+
+    getWeekAccess();
+  }, []);
 
   return (
     <div className="w-full h-full">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold text-blue-900 ">Visitas Semanales</h2>
-        <div>
-          <button
-            className={`px-3 py-1 rounded-l ${tipo === 'barras' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
-            onClick={() => setTipo('barras')}
-          >
-            Barras
-          </button>
-          <button
-            className={`px-3 py-1 rounded-r ${tipo === 'pastel' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
-            onClick={() => setTipo('pastel')}
-          >
-            Pastel
-          </button>
-        </div>
-      </div>
-
+      <h2 className="text-xl font-bold text-blue-900 mb-4">Visitas Semanales</h2>
       <ResponsiveContainer width="100%" height={300}>
-        {tipo === 'barras' ? (
-          <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="visitas" fill="#8884d8" />
-          </BarChart>
-        ) : (
-          <PieChart>
-            <Pie
-              data={data}
-              dataKey="visitas"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              fill="#8884d8"
-              label
-            >
-              {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
-        )}
+        <PieChart>
+          <Pie
+            data={data}
+            dataKey="visitas"
+            nameKey="name"
+            cx="50%"
+            cy="50%"
+            outerRadius={100}
+            fill="#8884d8"
+            label
+          >
+            {data.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            ))}
+          </Pie>
+          <Tooltip />
+          <Legend />
+        </PieChart>
       </ResponsiveContainer>
     </div>
   );
