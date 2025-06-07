@@ -9,6 +9,10 @@ const getTodayAccess = async () => {
   const response = await axiosConfig.get("/access/getTodayAccess");
   return response.data;
 };
+const getWeekAccess = async () => {
+  const response = await axiosConfig.get("/access/getWeekAccess");
+  return response.data;
+};
 
 const getAccessByDni = async (dni: string) => {
   const response = await axiosConfig.post("/access/getAccessByDni", { dni });
@@ -25,4 +29,5 @@ export default {
   getTodayAccess,
   getAccessByDni,
   registerAccess,
+  getWeekAccess
 };
