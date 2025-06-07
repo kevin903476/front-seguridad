@@ -3,6 +3,7 @@
 */
 
 import React, { useRef, useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import "./GooeyNav.css";
 
 interface GooeyNavItem {
@@ -196,9 +197,14 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
               className={activeIndex === index ? "active" : ""}
               onClick={(e) => handleClick(e, index)}
             >
-              <a href={item.href} onKeyDown={(e) => handleKeyDown(e, index)}>
+              <NavLink
+                to={item.href}
+                onKeyDown={(e) => handleKeyDown(e, index)}
+                className="block w-full h-full"
+                tabIndex={0}
+              >
                 {item.label}
-              </a>
+              </NavLink>
             </li>
           ))}
         </ul>

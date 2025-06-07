@@ -22,7 +22,7 @@ const Inicio = () => {
 
       {/* Gráfico */}
       <div className="bg-gray-400/10 border border-white shadow-sm p-4 rounded w-full">
-        <Grafico />
+        <Grafico /> 
       </div>
     </div>
   </div>
