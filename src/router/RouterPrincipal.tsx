@@ -9,6 +9,7 @@ import Inicio from "../pages/Inicio";
 import GooeyNav from "../react-bit/GooeyNav/GooeyNav";
 import logo from "../assets/utn_logo-removebg-preview.png";
 import EstudianteForm from "../components/EstudianteForm";
+import Formularios from "../pages/Formularios";
 
 const RouterPrincipal = () => {
   const items = [
@@ -48,7 +49,7 @@ const RouterPrincipal = () => {
         <Routes>
           <Route path="/" element={<Inicio />} />
           <Route path="/inicio" element={<Inicio />} />
-          <Route path="/registro" element={<EstudianteForm />} />
+          <Route path="/registro" element={<Formularios/>} />
           <Route path="/otro" element={"#"} />
 
           <Route path="*" element={"#"} />

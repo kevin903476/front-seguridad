@@ -3,7 +3,7 @@
 */
 
 import React, { useRef, useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom"; // <-- agrega useLocation
 import "./GooeyNav.css";
 
 interface GooeyNavItem {
@@ -32,11 +32,20 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
   colors = [1, 2, 3, 1, 2, 3, 1, 4],
   initialActiveIndex = 0,
 }) => {
+  const location = useLocation(); // <-- hook para obtener la ruta actual
   const containerRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLUListElement>(null);
   const filterRef = useRef<HTMLSpanElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
-  const [activeIndex, setActiveIndex] = useState<number>(initialActiveIndex);
+
+  // Cambia el estado inicial a -1 para evitar parpadeos
+  const [activeIndex, setActiveIndex] = useState<number>(-1);
+
+  // Sincroniza el activeIndex con la ruta actual
+  useEffect(() => {
+    const idx = items.findIndex((item) => item.href === location.pathname);
+    setActiveIndex(idx === -1 ? 0 : idx);
+  }, [location.pathname, items]);
 
   const noise = (n = 1) => n / 2 - Math.random() * n;
 

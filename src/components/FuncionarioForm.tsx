@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import useEstudiante from "../hooks/useEstudiante";
+import useFuncionario from "../hooks/useFuncionario";
 import Modal from "./Modal";
 
-const EstudianteForm = () => {
-  const { registerStudent } = useEstudiante();
+const FuncionarioForm = () => {
+  const { registerFuncionario } = useFuncionario();
   const [formData, setFormData] = useState({
     dni: "",
     nombre_completo: "",
     estado: "1",
-    carrera_id: "",
+    puesto_id: "",
     foto: null as File | null,
   });
   const [loading, setLoading] = useState(false);
@@ -29,26 +29,20 @@ const EstudianteForm = () => {
     setLoading(true);
     setMensaje("");
     try {
-      // Separar nombre y apellido del campo nombre_completo
-      const [nombre, ...apellidos] = formData.nombre_completo.trim().split(" ");
-      const apellido = apellidos.join(" ");
-      // Preparar datos para enviar (FormData para incluir archivo)
       const data = new FormData();
       data.append("dni", formData.dni);
       data.append("nombre_completo", formData.nombre_completo);
-      data.append("nombre", nombre);
-      data.append("apellido", apellido);
       data.append("estado", formData.estado);
-      data.append("carrera_id", formData.carrera_id);
+      data.append("puesto_id", formData.puesto_id);
       if (formData.foto) data.append("foto", formData.foto);
 
-      await registerStudent(data as any);
+      await registerFuncionario(data as any);
       setMensaje("Ingresado correctamente");
       setFormData({
         dni: "",
         nombre_completo: "",
         estado: "1",
-        carrera_id: "",
+        puesto_id: "",
         foto: null,
       });
     } catch (error) {
@@ -68,7 +62,7 @@ const EstudianteForm = () => {
         style={{ background: "linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%)" }}
         onSubmit={handleSubmit}
       >
-        <h2 className="text-2xl font-bold text-blue-700 mb-6 text-center">Registro de Estudiante</h2>
+        <h2 className="text-2xl font-bold text-blue-700 mb-6 text-center">Registro de Funcionario</h2>
 
         <label className="block text-blue-900 font-semibold mb-1">DNI:</label>
         <input
@@ -101,12 +95,12 @@ const EstudianteForm = () => {
           <option value="0">Inactivo</option>
         </select>
 
-        <label className="block text-blue-900 font-semibold mb-1">Carrera ID:</label>
+        <label className="block text-blue-900 font-semibold mb-1">Puesto ID:</label>
         <input
           type="number"
-          name="carrera_id"
+          name="puesto_id"
           required
-          value={formData.carrera_id}
+          value={formData.puesto_id}
           onChange={handleChange}
           className="w-full px-4 py-2 mb-4 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
         />
@@ -140,4 +134,4 @@ const EstudianteForm = () => {
   );
 };
 
-export default EstudianteForm;
+export default FuncionarioForm;
