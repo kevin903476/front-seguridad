@@ -117,7 +117,7 @@ const AnimatedList: React.FC<AnimatedListProps> = ({
                     className="w-35 h-35 object-cover rounded-xl "
                   />
                 )}
-                <p className="item-text font-semibold text-blue-900 text-base">
+                <p className="item-text font-semibold text-blue-900 text-base w-50 ">
                   {item.texto}
                 </p>
               </div>

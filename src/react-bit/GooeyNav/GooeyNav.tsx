@@ -204,10 +204,10 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
             <li
               key={index}
               className={activeIndex === index ? "active" : ""}
-              onClick={(e) => handleClick(e, index)}
             >
               <NavLink
                 to={item.href}
+                onClick={(e) => handleClick(e, index)} // Mueve el handleClick aquí
                 onKeyDown={(e) => handleKeyDown(e, index)}
                 className="block w-full h-full"
                 tabIndex={0}

@@ -38,9 +38,23 @@
   color: white;
 }
 
-.gooey-nav-container nav ul li:focus-within:has(:focus-visible) {
-  box-shadow: 0 0 0.5px 1.5px white;
+.gooey-nav-container nav ul li a {
+  color: white !important;
+  text-shadow: none;
+  transition: color 0.3s;
+  text-decoration: none;
 }
+
+.gooey-nav-container nav ul li a:hover,
+.gooey-nav-container nav ul li a:focus {
+  color: rgb(222, 222, 222) !important;
+}
+
+.gooey-nav-container nav ul li.active {
+  color: black;
+}
+
+
 
 .gooey-nav-container nav ul li::after {
   content: "";
@@ -54,12 +68,8 @@
   z-index: -1;
 }
 
-.gooey-nav-container nav ul li.active {
-  color: black;
-  text-shadow: none;
-}
-
 .gooey-nav-container nav ul li.active::after {
+  background: white !important;
   opacity: 1;
   transform: scale(1);
 }
@@ -83,7 +93,7 @@
 }
 
 .gooey-nav-container .effect.text.active {
-  color: black;
+  color: rgb(15, 0, 82);
 }
 
 .gooey-nav-container .effect.filter {

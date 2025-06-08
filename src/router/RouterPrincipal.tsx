@@ -15,7 +15,7 @@ const RouterPrincipal = () => {
   const items = [
     { label: "Inicio", href: "/inicio" },
     { label: "Registro", href: "/registro" },
-    { label: "Estadistica", href: "#" },
+   /*  { label: "Estadistica", href: "#" }, */
   ];
 
   return (

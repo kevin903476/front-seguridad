@@ -1,42 +1,7 @@
-import { useState, useEffect } from 'react';
-import accesoService from "../service/accesoService";
-
-interface Acceso {
-  nombre_completo: string;
-  dni_escaneado: string;
-  estado_acceso: string;
-  tipo_persona: string;
-  foto_url: string;
-}
+import { useBusquedaPersonaHoy } from "../hooks/useBusquedaPersonaHoy";
 
 const BusquedaPersona = () => {
-  const [busqueda, setBusqueda] = useState('');
-  const [accesos, setAccesos] = useState<Acceso[]>([]);
-  const [resultados, setResultados] = useState<Acceso[]>([]);
-
-  useEffect(() => {
-    accesoService
-      .getTodayAccess()
-      .then((data) => setAccesos(data.data))
-      .catch((err) => console.error("Error:", err));
-  }, []);
-
-  useEffect(() => {
-    if (busqueda.trim() === "") {
-      setResultados([]);
-      return;
-    }
-    const filtrados = accesos.filter(a =>
-      a.nombre_completo &&
-      a.nombre_completo.toLowerCase().includes(busqueda.toLowerCase())
-    );
-    // Eliminar duplicados por dni_escaneado
-    const unicos = filtrados.filter(
-      (item, idx, self) =>
-        self.findIndex(a => a.dni_escaneado === item.dni_escaneado) === idx
-    );
-    setResultados(unicos);
-  }, [busqueda, accesos]);
+  const { busqueda, setBusqueda, resultados } = useBusquedaPersonaHoy();
 
   return (
     <div>
