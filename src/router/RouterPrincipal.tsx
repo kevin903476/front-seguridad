@@ -1,14 +1,11 @@
 import {
   Routes,
   Route,
-  NavLink,
   BrowserRouter,
-  Navigate,
 } from "react-router-dom";
 import Inicio from "../pages/Inicio";
 import GooeyNav from "../react-bit/GooeyNav/GooeyNav";
 import logo from "../assets/utn_logo-removebg-preview.png";
-import EstudianteForm from "../components/EstudianteForm";
 import Formularios from "../pages/Formularios";
 
 const RouterPrincipal = () => {
