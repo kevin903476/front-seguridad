@@ -1,20 +1,16 @@
-import {
-  Routes,
-  Route,
-  NavLink,
-  BrowserRouter,
-  Navigate,
-} from "react-router-dom";
+import {Routes, Route, NavLink, BrowserRouter, Navigate, } from "react-router-dom";
 import Inicio from "../pages/Inicio";
 import GooeyNav from "../react-bit/GooeyNav/GooeyNav";
 import logo from "../assets/utn_logo-removebg-preview.png";
 import EstudianteForm from "../components/EstudianteForm";
 import Formularios from "../pages/Formularios";
+import EstadisticasPage from '../pages/EstadisticasPage';
 
 const RouterPrincipal = () => {
   const items = [
     { label: "Inicio", href: "/inicio" },
     { label: "Registro", href: "/registro" },
+    { label: "Estadísticas", href: "/estadisticas" }
    /*  { label: "Estadistica", href: "#" }, */
   ];
 
@@ -50,6 +46,7 @@ const RouterPrincipal = () => {
           <Route path="/" element={<Inicio />} />
           <Route path="/inicio" element={<Inicio />} />
           <Route path="/registro" element={<Formularios/>} />
+          <Route path="/estadisticas" element={<EstadisticasPage />} />
           <Route path="/otro" element={"#"} />
 
           <Route path="*" element={"#"} />
