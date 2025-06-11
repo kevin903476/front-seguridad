@@ -123,7 +123,7 @@ const EstudianteForm = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-white-600 hover:bg-red-700 text-black font-bold py-2 px-4 rounded border border-red-700 shadow-lg transition duration-200"
+          className="w-full bg-white-600 bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded border border-red-700 shadow-lg transition duration-200"
         >
           {loading ? "Registrando..." : "Registrar"}
         </button>

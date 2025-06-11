@@ -1,57 +1,75 @@
 import { useState } from "react";
+import { useSpring, animated as a } from "@react-spring/web";
 import EstudianteForm from "../components/EstudianteForm";
 import FuncionarioForm from "../components/FuncionarioForm";
 
 const Formularios = () => {
-  const [form, setForm] = useState<"estudiante" | "funcionario">("estudiante");
+  const [flipped, setFlipped] = useState(false);
+
+  const { transform } = useSpring({
+    transform: `rotateY(${flipped ? 180 : 0}deg)`,
+    config: { mass: 5, tension: 500, friction: 80 },
+  });
 
   return (
-    <div className="flex flex-col items-center justify-center mt-14">
+    <div className="flex flex-col items-center justify-center mt-14 mb-14">
       <div className="flex gap-4 mb-6">
         <button
           className={`px-4 py-2 rounded font-bold border transition duration-300 ${
-            form === "estudiante"
-              ? "bg-blue-700 text-white border-blue-700 cursor-not-allowed"
-              : "bg-white text-blue-700 border-blue-700 hover:bg-blue-100"
+            !flipped
+              ? "bg-blue-800 text-neutral-100 cursor-not-allowed"
+              : "bg-blue-900 text-neutral-400 hover:bg-blue-900/90"
           }`}
-          disabled={form === "estudiante"}
-          onClick={() => setForm("estudiante")}
+          disabled={!flipped}
+          onClick={() => setFlipped(false)}
         >
           Formulario Estudiante
         </button>
         <button
           className={`px-4 py-2 rounded font-bold border transition duration-300 ${
-            form === "funcionario"
-              ? "bg-blue-700 text-white border-blue-700 cursor-not-allowed"
-              : "bg-white text-blue-700 border-blue-700 hover:bg-blue-100"
+            flipped
+              ? "bg-blue-800 text-neutral-100 cursor-not-allowed"
+              : "bg-blue-900 text-neutral-400 hover:bg-blue-900/90"
           }`}
-          disabled={form === "funcionario"}
-          onClick={() => setForm("funcionario")}
+          disabled={flipped}
+          onClick={() => setFlipped(true)}
         >
           Formulario Funcionario
         </button>
       </div>
-      <div
-        className="w-full flex justify-center transition-all duration-500"
-        key={form}
-        style={{ minHeight: 500 }}
-      >
-        {form === "estudiante" ? (
-          <div className="animate-fade-in">
+
+      <div className="relative w-[400px] h-[600px]">
+        <a.div
+          className="w-full h-full relative"
+          style={{
+            transform,
+            transformStyle: "preserve-3d",
+          }}
+        >
+          {/* Cara frontal */}
+          <div
+            className="absolute w-full h-full rounded-xl flex items-center justify-center"
+            style={{
+              backfaceVisibility: "hidden",
+            }}
+          >
             <EstudianteForm />
           </div>
-        ) : (
-          <div className="animate-fade-in">
+
+          {/* Cara trasera */}
+          <div
+            className="absolute w-full h-full rounded-xl flex items-center justify-center"
+            style={{
+              transform: "rotateY(180deg)",
+              backfaceVisibility: "hidden",
+            }}
+          >
             <FuncionarioForm />
           </div>
-        )}
+        </a.div>
       </div>
     </div>
   );
 };
 
 export default Formularios;
-
-// Agrega esta animación en tu CSS global o tailwind.config.js
-// .animate-fade-in { animation: fadeIn 0.4s; }
-// @keyframes fadeIn { from { opacity: 0; transform: translateY(20px);} to { opacity: 1; transform: none; } }

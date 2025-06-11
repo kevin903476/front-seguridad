@@ -1,7 +1,6 @@
 import ListaAccesoDiaria from "../components/ListaAccesoDiaria";
 import Grafico from "../components/Grafico";
 import BusquedaPersona from "../components/BusquedaPersona";
-import { div } from "framer-motion/client";
 
 const Inicio = () => {
   return (
