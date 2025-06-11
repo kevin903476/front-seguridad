@@ -13,33 +13,31 @@ export const useEstadisticasAccesos = (fecha?: string) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let isMounted = true;
+    const controller = new AbortController();
     
     const fetchData = async () => {
       try {
-        if (isMounted) {
-          setCargando(true);
-          setError(null);
-        }
+        setCargando(true);
+        setError(null);
 
-        let result;
+        let response;
         
         if (fecha) {
           const data = await accesoService.getAccessByDate(fecha);
-          result = data ? [data] : [];
+          response = data ? [data] : [];
         } else {
-          result = await accesoService.getWeekAccess();
+          response = await accesoService.getWeekAccess();
         }
 
-        if (isMounted) {
-          setDatos(Array.isArray(result) ? result : []);
+        if (!controller.signal.aborted) {
+          setDatos(Array.isArray(response) ? response : []);
         }
       } catch (err) {
-        if (isMounted) {
+        if (!controller.signal.aborted) {
           setError(err instanceof Error ? err.message : 'Error cargando datos');
         }
       } finally {
-        if (isMounted) {
+        if (!controller.signal.aborted) {
           setCargando(false);
         }
       }
@@ -47,7 +45,7 @@ export const useEstadisticasAccesos = (fecha?: string) => {
 
     fetchData();
     
-    return () => { isMounted = false };
+    return () => controller.abort();
   }, [fecha]);
 
   return { datos, cargando, error };
