@@ -71,7 +71,7 @@ const FuncionarioForm = () => {
           required
           value={formData.dni}
           onChange={handleChange}
-          className="w-full px-4 py-2 mb-4 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+          className="w-full px-4 py-2 mb-4 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white  text-black"
         />
 
         <label className="block text-blue-900 font-semibold mb-1">Nombre completo:</label>
@@ -81,7 +81,7 @@ const FuncionarioForm = () => {
           required
           value={formData.nombre_completo}
           onChange={handleChange}
-          className="w-full px-4 py-2 mb-4 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+          className="w-full px-4 py-2 mb-4 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white  text-black"
         />
 
         <label className="block text-blue-900 font-semibold mb-1">Estado:</label>
@@ -89,7 +89,7 @@ const FuncionarioForm = () => {
           name="estado"
           value={formData.estado}
           onChange={handleChange}
-          className="w-full px-4 py-2 mb-4 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+          className="w-full px-4 py-2 mb-4 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white  text-black"
         >
           <option value="1">Activo</option>
           <option value="0">Inactivo</option>
@@ -102,7 +102,7 @@ const FuncionarioForm = () => {
           required
           value={formData.puesto_id}
           onChange={handleChange}
-          className="w-full px-4 py-2 mb-4 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+          className="w-full px-4 py-2 mb-4 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white  text-black"
         />
 
         <label className="block text-blue-900 font-semibold mb-1">Foto:</label>
@@ -111,7 +111,7 @@ const FuncionarioForm = () => {
           name="foto"
           accept="image/*"
           onChange={handleChange}
-          className="w-full px-4 py-2 mb-6 border border-blue-200 rounded bg-white"
+          className="w-full px-4 py-2 mb-6 border border-blue-200 rounded bg-white  text-black"
         />
 
         <button
