@@ -13,7 +13,7 @@ const getAllFuncionarios = async () => {
   return response.data;
 };
 
-const registerFuncionario = async (formData: FormData) => {
+const registerFuncionario = async (formData: Funcionario) => {
   const response = await axiosConfig.post(
     "/official/register",
     formData,
