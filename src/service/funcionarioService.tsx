@@ -13,13 +13,20 @@ const getAllFuncionarios = async () => {
   return response.data;
 };
 
-const registerFuncionario = async (funcionarioData: Funcionario) => {
+const registerFuncionario = async (formData: FormData) => {
   const response = await axiosConfig.post(
     "/official/register",
-    funcionarioData
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
   );
   return response.data;
 };
+
+
 
 export default {
   getAllFuncionarios,
