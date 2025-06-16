@@ -15,13 +15,19 @@ const getAllStudents = async () => {
   return response.data;
 };
 
-const registerStudent = async (studentData: StudentData) => {
+const registerStudent = async (formData: FormData) => {
   const response = await axiosConfig.post(
     "/student/register",
-    studentData
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
   );
   return response.data;
 };
+
 
 export default {
   getAllStudents,
